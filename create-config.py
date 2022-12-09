@@ -10,8 +10,9 @@ import os
 import constants
 
 
+
 def app_init():
-    global nx_server, nx_user, nx_pwd, nx_type, nx_run, datafile
+    global nx_server, nx_user, nx_pwd, nx_type, nx_run, nx_blobs, datafile
 
     parser = argparse.ArgumentParser()
 
@@ -28,7 +29,9 @@ def app_init():
     nx_user = args["user"]
     nx_pwd = args["passwd"]
     nx_type = args['type']
-    nx_run = True
+    nx_run = False
+    nx_blobs = True
+
     datafile = args['datafile']
 
     return
@@ -89,6 +92,8 @@ def create_blobs():
 
             print ('create blob: ' + name + " " + type + " " + blob_path + " " + constants.blobpath_api)
             create_object(name, constants.blobpath_api, blob_payload)
+        else:
+            print("default blob: " + name)
 
     return
 
@@ -133,6 +138,8 @@ def _create_repositories(data):
 
                 print ('create repository: ' + name + " " + format + " " + repo_api)
                 create_object(name, repo_api, repo)
+        else:
+            print("default repo: " + name)
 
     return
 
@@ -164,6 +171,8 @@ def create_privileges():
             type_api = constants.privilege_endpoints[priv_type]
             print('create privilege: ' + priv_name + " " + priv_type + " " + type_api)
             create_object(priv_name, type_api, priv)
+        else:
+            print("default privilege: " + priv_name)
 
     return
 
@@ -181,6 +190,9 @@ def create_roles():
         if not role_name in constants.ootb_roles:
             print('create role: ' + role_name + " " + type_api)
             create_object(role_name, type_api, role)
+        else:
+            print("default role: " + role_name)
+
 
     return
 
@@ -198,13 +210,18 @@ def create_users():
         if not user_name in constants.ootb_users:
             print('create user: ' + user_name + " " + type_api)
             create_object(user_name, type_api, user)
+        else:
+            print("default user: " + user_name)
+
 
     return
 
 def main():
     app_init()
 
-    #create_blobs()
+    if nx_blobs:
+        create_blobs()
+
     create_repositories()
     create_content_selectors()
     create_privileges()
