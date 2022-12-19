@@ -12,7 +12,7 @@ import constants
 
 
 def app_init():
-    global nx_source_server, nx_destination_server, nx_user, nx_pwd, nx_type, nx_run, nx_blobs, datafile
+    global nx_source_server, nx_destination_server, nx_user, nx_pwd, nx_type, nx_run, nx_create_blobs, datafile
 
     parser = argparse.ArgumentParser()
 
@@ -23,6 +23,7 @@ def app_init():
     parser.add_argument('-t', '--type', required=False)
     parser.add_argument('-f', '--datafile', required=False)
     parser.add_argument('-r', '--run', action='store_true')
+    parser.add_argument('-b', '--createblobs', action='store_true')
 
     args = vars(parser.parse_args())
     
@@ -32,7 +33,7 @@ def app_init():
     nx_pwd = args["passwd"]
     nx_type = args['type']
     nx_run = args['run']
-    nx_blobs = False 
+    nx_create_blobs = args['createblobs'] 
 
     datafile = args['datafile']
 
@@ -104,7 +105,7 @@ def create_blobs():
     return
 
 
-def replace_server_path():
+def get_new_repo_list():
     repo_src = constants.output_dir + '/repo.json'
     repo_dest = constants.output_dir + '/repo_dest.json'
 
@@ -121,7 +122,7 @@ def replace_server_path():
     
 def create_repositories():
 
-    f = replace_server_path()
+    f = get_new_repo_list()
     data = read_json_file(f)
 
     hosted_repos = get_repos_by_type(data, 'hosted')
@@ -242,7 +243,7 @@ def create_users():
 def main():
     app_init()
 
-    if nx_blobs:
+    if nx_create_blobs:
         create_blobs()
 
     create_repositories()
