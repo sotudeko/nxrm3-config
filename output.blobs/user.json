@@ -1,0 +1,70 @@
+[
+  {
+    "userId": "michael",
+    "firstName": "Michael",
+    "lastName": "Franks",
+    "emailAddress": "michael@franks.com",
+    "source": "default",
+    "status": "active",
+    "readOnly": false,
+    "roles": [
+      "read_only_role"
+    ],
+    "externalRoles": []
+  },
+  {
+    "userId": "joe",
+    "firstName": "Joe",
+    "lastName": "Sample",
+    "emailAddress": "joe@sample.com",
+    "source": "default",
+    "status": "active",
+    "readOnly": false,
+    "roles": [
+      "read_only_role",
+      "cs-two-role-id",
+      "nx-anonymous"
+    ],
+    "externalRoles": []
+  },
+  {
+    "userId": "anonymous",
+    "firstName": "Anonymous",
+    "lastName": "User",
+    "emailAddress": "anonymous@example.org",
+    "source": "default",
+    "status": "active",
+    "readOnly": false,
+    "roles": [
+      "nx-anonymous"
+    ],
+    "externalRoles": []
+  },
+  {
+    "userId": "admin",
+    "firstName": "Administrator",
+    "lastName": "User",
+    "emailAddress": "admin@example.org",
+    "source": "default",
+    "status": "active",
+    "readOnly": false,
+    "roles": [
+      "nx-admin"
+    ],
+    "externalRoles": []
+  },
+  {
+    "userId": "miles",
+    "firstName": "Miles",
+    "lastName": "Davis",
+    "emailAddress": "miles@davis.com",
+    "source": "default",
+    "status": "active",
+    "readOnly": false,
+    "roles": [
+      "read_only_role",
+      "cs-one-role-id"
+    ],
+    "externalRoles": []
+  }
+]

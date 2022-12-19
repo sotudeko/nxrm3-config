@@ -1,0 +1,348 @@
+[
+  {
+    "name": "staging-test",
+    "url": "http://localhost:8081/repository/staging-test",
+    "online": true,
+    "storage": {
+      "blobStoreName": "maven",
+      "strictContentTypeValidation": true,
+      "writePolicy": "ALLOW_ONCE"
+    },
+    "cleanup": null,
+    "maven": {
+      "versionPolicy": "RELEASE",
+      "layoutPolicy": "STRICT",
+      "contentDisposition": "INLINE"
+    },
+    "component": {
+      "proprietaryComponents": false
+    },
+    "format": "maven2",
+    "type": "hosted"
+  },
+  {
+    "name": "npm_group",
+    "format": "npm",
+    "url": "http://localhost:8081/repository/npm_group",
+    "online": true,
+    "storage": {
+      "blobStoreName": "npm",
+      "strictContentTypeValidation": true
+    },
+    "group": {
+      "memberNames": [
+        "npm_registry",
+        "npm_proxy"
+      ],
+      "writableMember": "npm_registry"
+    },
+    "type": "group"
+  },
+  {
+    "name": "nuget.org-proxy",
+    "url": "http://localhost:8081/repository/nuget.org-proxy",
+    "online": true,
+    "storage": {
+      "blobStoreName": "default",
+      "strictContentTypeValidation": true,
+      "writePolicy": "ALLOW"
+    },
+    "cleanup": null,
+    "proxy": {
+      "remoteUrl": "https://api.nuget.org/v3/index.json",
+      "contentMaxAge": 1440,
+      "metadataMaxAge": 1440
+    },
+    "negativeCache": {
+      "enabled": true,
+      "timeToLive": 1440
+    },
+    "httpClient": {
+      "blocked": false,
+      "autoBlock": false,
+      "connection": {
+        "retries": null,
+        "userAgentSuffix": null,
+        "timeout": null,
+        "enableCircularRedirects": false,
+        "enableCookies": false,
+        "useTrustStore": false
+      },
+      "authentication": null
+    },
+    "routingRuleName": null,
+    "nugetProxy": {
+      "queryCacheItemMaxAge": 3600,
+      "nugetVersion": "V3"
+    },
+    "format": "nuget",
+    "type": "proxy"
+  },
+  {
+    "name": "maven-releases",
+    "url": "http://localhost:8081/repository/maven-releases",
+    "online": true,
+    "storage": {
+      "blobStoreName": "default",
+      "strictContentTypeValidation": false,
+      "writePolicy": "ALLOW_ONCE"
+    },
+    "cleanup": null,
+    "maven": {
+      "versionPolicy": "RELEASE",
+      "layoutPolicy": "STRICT",
+      "contentDisposition": "INLINE"
+    },
+    "component": {
+      "proprietaryComponents": false
+    },
+    "format": "maven2",
+    "type": "hosted"
+  },
+  {
+    "name": "conda-proxy",
+    "format": "conda",
+    "url": "http://localhost:8081/repository/conda-proxy",
+    "online": true,
+    "storage": {
+      "blobStoreName": "default",
+      "strictContentTypeValidation": true
+    },
+    "cleanup": null,
+    "proxy": {
+      "remoteUrl": "https://repo.anaconda.com/pkgs/",
+      "contentMaxAge": 1440,
+      "metadataMaxAge": 1440
+    },
+    "negativeCache": {
+      "enabled": true,
+      "timeToLive": 1440
+    },
+    "httpClient": {
+      "blocked": false,
+      "autoBlock": true,
+      "connection": {
+        "retries": null,
+        "userAgentSuffix": null,
+        "timeout": null,
+        "enableCircularRedirects": false,
+        "enableCookies": false,
+        "useTrustStore": false
+      },
+      "authentication": null
+    },
+    "routingRuleName": null,
+    "type": "proxy"
+  },
+  {
+    "name": "staging-prod",
+    "url": "http://localhost:8081/repository/staging-prod",
+    "online": true,
+    "storage": {
+      "blobStoreName": "maven",
+      "strictContentTypeValidation": true,
+      "writePolicy": "ALLOW_ONCE"
+    },
+    "cleanup": null,
+    "maven": {
+      "versionPolicy": "RELEASE",
+      "layoutPolicy": "STRICT",
+      "contentDisposition": "INLINE"
+    },
+    "component": {
+      "proprietaryComponents": false
+    },
+    "format": "maven2",
+    "type": "hosted"
+  },
+  {
+    "name": "staging-dev",
+    "url": "http://localhost:8081/repository/staging-dev",
+    "online": true,
+    "storage": {
+      "blobStoreName": "maven",
+      "strictContentTypeValidation": true,
+      "writePolicy": "ALLOW_ONCE"
+    },
+    "cleanup": null,
+    "maven": {
+      "versionPolicy": "RELEASE",
+      "layoutPolicy": "STRICT",
+      "contentDisposition": "INLINE"
+    },
+    "component": {
+      "proprietaryComponents": false
+    },
+    "format": "maven2",
+    "type": "hosted"
+  },
+  {
+    "name": "nuget-group",
+    "format": "nuget",
+    "url": "http://localhost:8081/repository/nuget-group",
+    "online": true,
+    "storage": {
+      "blobStoreName": "default",
+      "strictContentTypeValidation": true
+    },
+    "group": {
+      "memberNames": [
+        "nuget-hosted",
+        "nuget.org-proxy"
+      ]
+    },
+    "type": "group"
+  },
+  {
+    "name": "maven-snapshots",
+    "url": "http://localhost:8081/repository/maven-snapshots",
+    "online": true,
+    "storage": {
+      "blobStoreName": "default",
+      "strictContentTypeValidation": false,
+      "writePolicy": "ALLOW"
+    },
+    "cleanup": null,
+    "maven": {
+      "versionPolicy": "SNAPSHOT",
+      "layoutPolicy": "STRICT",
+      "contentDisposition": "INLINE"
+    },
+    "component": {
+      "proprietaryComponents": false
+    },
+    "format": "maven2",
+    "type": "hosted"
+  },
+  {
+    "name": "maven-central",
+    "url": "http://localhost:8081/repository/maven-central",
+    "online": true,
+    "storage": {
+      "blobStoreName": "default",
+      "strictContentTypeValidation": false,
+      "writePolicy": "ALLOW"
+    },
+    "cleanup": null,
+    "proxy": {
+      "remoteUrl": "https://repo1.maven.org/maven2/",
+      "contentMaxAge": -1,
+      "metadataMaxAge": 1440
+    },
+    "negativeCache": {
+      "enabled": true,
+      "timeToLive": 1440
+    },
+    "httpClient": {
+      "blocked": false,
+      "autoBlock": false,
+      "connection": {
+        "retries": null,
+        "userAgentSuffix": null,
+        "timeout": null,
+        "enableCircularRedirects": false,
+        "enableCookies": false,
+        "useTrustStore": false
+      },
+      "authentication": null
+    },
+    "routingRuleName": null,
+    "maven": {
+      "versionPolicy": "RELEASE",
+      "layoutPolicy": "PERMISSIVE",
+      "contentDisposition": "INLINE"
+    },
+    "format": "maven2",
+    "type": "proxy"
+  },
+  {
+    "name": "npm_proxy",
+    "url": "http://localhost:8081/repository/npm_proxy",
+    "online": true,
+    "storage": {
+      "blobStoreName": "npm",
+      "strictContentTypeValidation": true,
+      "writePolicy": "ALLOW"
+    },
+    "cleanup": null,
+    "proxy": {
+      "remoteUrl": "https://registry.npmjs.org",
+      "contentMaxAge": 1440,
+      "metadataMaxAge": 1440
+    },
+    "negativeCache": {
+      "enabled": true,
+      "timeToLive": 1440
+    },
+    "httpClient": {
+      "blocked": false,
+      "autoBlock": true,
+      "connection": {
+        "retries": null,
+        "userAgentSuffix": null,
+        "timeout": null,
+        "enableCircularRedirects": false,
+        "enableCookies": false,
+        "useTrustStore": false
+      },
+      "authentication": null
+    },
+    "routingRuleName": null,
+    "npm": {
+      "removeNonCataloged": true,
+      "removeQuarantined": true
+    },
+    "format": "npm",
+    "type": "proxy"
+  },
+  {
+    "name": "nuget-hosted",
+    "format": "nuget",
+    "url": "http://localhost:8081/repository/nuget-hosted",
+    "online": true,
+    "storage": {
+      "blobStoreName": "default",
+      "strictContentTypeValidation": true,
+      "writePolicy": "ALLOW"
+    },
+    "cleanup": null,
+    "component": {
+      "proprietaryComponents": false
+    },
+    "type": "hosted"
+  },
+  {
+    "name": "maven-public",
+    "format": "maven2",
+    "url": "http://localhost:8081/repository/maven-public",
+    "online": true,
+    "storage": {
+      "blobStoreName": "default",
+      "strictContentTypeValidation": true
+    },
+    "group": {
+      "memberNames": [
+        "maven-releases",
+        "maven-snapshots",
+        "maven-central"
+      ]
+    },
+    "type": "group"
+  },
+  {
+    "name": "npm_registry",
+    "format": "npm",
+    "url": "http://localhost:8081/repository/npm_registry",
+    "online": true,
+    "storage": {
+      "blobStoreName": "npm",
+      "strictContentTypeValidation": true,
+      "writePolicy": "ALLOW_ONCE"
+    },
+    "cleanup": null,
+    "component": {
+      "proprietaryComponents": true
+    },
+    "type": "hosted"
+  }
+]

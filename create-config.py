@@ -21,7 +21,7 @@ def app_init():
     parser.add_argument('-p', '--passwd', default="admin123", required=False)
     parser.add_argument('-t', '--type', required=False)
     parser.add_argument('-f', '--datafile', required=False)
-    parser.add_argument('-r', '--run', action='store_true', default=True, required=False)
+    parser.add_argument('-r', '--run', action='store_true')
 
     args = vars(parser.parse_args())
     
@@ -29,8 +29,8 @@ def app_init():
     nx_user = args["user"]
     nx_pwd = args["passwd"]
     nx_type = args['type']
-    nx_run = False
-    nx_blobs = True
+    nx_run = args['run']
+    nx_blobs = False 
 
     datafile = args['datafile']
 
@@ -43,6 +43,7 @@ def create_object(object_name, type_api, payload):
     print(payload)
 
     if nx_run:
+        print("creating...")
         resp = requests.post(url, 
                             allow_redirects = False,
                             json=payload, 
@@ -59,7 +60,7 @@ def create_object(object_name, type_api, payload):
             # print('error creating ' + nx_type + ': ' + object_name)
             # print(payload)
             print('error' )
-
+        
     return
 
 
@@ -90,10 +91,10 @@ def create_blobs():
             blob_payload['path'] = blob_path
             blob_payload['name'] = name
 
-            print ('create blob: ' + name + " " + type + " " + blob_path + " " + constants.blobpath_api)
+            print ('got blob: ' + name + " " + type + " " + blob_path + " " + constants.blobpath_api)
             create_object(name, constants.blobpath_api, blob_payload)
         else:
-            print("default blob: " + name)
+            print("default blob: " + name  + " [do not create]")
 
     return
 
@@ -136,10 +137,10 @@ def _create_repositories(data):
                 format = format[:-1]
                 repo_api = "repositories/" + format + "/" + type
 
-                print ('create repository: ' + name + " " + format + " " + repo_api)
+                print ('got repository: ' + name + " " + format + " " + repo_api)
                 create_object(name, repo_api, repo)
         else:
-            print("default repo: " + name)
+            print("default repo: " + name  + " [do not create]")
 
     return
 
@@ -153,7 +154,7 @@ def create_content_selectors():
 
     for cs in data:
         name = cs['name']
-        print ('create content selector: ' + name + " " + type_api)
+        print ('got content selector: ' + name + " " + type_api)
         create_object(name, type_api, cs)
 
     return
@@ -169,10 +170,10 @@ def create_privileges():
 
         if not priv_name.startswith(constants.ootb_priv):
             type_api = constants.privilege_endpoints[priv_type]
-            print('create privilege: ' + priv_name + " " + priv_type + " " + type_api)
+            print('got privilege: ' + priv_name + " " + priv_type + " " + type_api)
             create_object(priv_name, type_api, priv)
         else:
-            print("default privilege: " + priv_name)
+            print("default privilege: " + priv_name + " [do not create]")
 
     return
 
@@ -188,10 +189,10 @@ def create_roles():
         role_name = role["name"]
 
         if not role_name in constants.ootb_roles:
-            print('create role: ' + role_name + " " + type_api)
+            print('got role: ' + role_name + " " + type_api)
             create_object(role_name, type_api, role)
         else:
-            print("default role: " + role_name)
+            print("default role: " + role_name + " [do not create]")
 
 
     return
@@ -208,10 +209,10 @@ def create_users():
         user_name = user["userId"]
 
         if not user_name in constants.ootb_users:
-            print('create user: ' + user_name + " " + type_api)
+            print('got user: ' + user_name + " " + type_api)
             create_object(user_name, type_api, user)
         else:
-            print("default user: " + user_name)
+            print("default user: " + user_name + " [do not create]")
 
 
     return

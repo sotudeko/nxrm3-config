@@ -1,0 +1,14 @@
+[
+  {
+    "name": "cs-one",
+    "type": "csel",
+    "description": "For the maven org namespace ",
+    "expression": "format == \"maven2\" and path =^ \"/org\""
+  },
+  {
+    "name": "cs-two",
+    "type": "csel",
+    "description": "For the maven com namespace",
+    "expression": "format == \"maven2\" and path =^ \"/com\""
+  }
+]
