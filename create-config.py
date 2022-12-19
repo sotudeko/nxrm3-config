@@ -12,11 +12,12 @@ import constants
 
 
 def app_init():
-    global nx_server, nx_user, nx_pwd, nx_type, nx_run, nx_blobs, datafile
+    global nx_source_server, nx_destination_server, nx_user, nx_pwd, nx_type, nx_run, nx_blobs, datafile
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-s', '--server', help='', default="http://localhost:8081", required=False)
+    parser.add_argument('-s', '--sourceserver', help='', required=True)
+    parser.add_argument('-d', '--destinationserver', help='', required=True)
     parser.add_argument('-a', '--user', help='', default="admin", required=False)
     parser.add_argument('-p', '--passwd', default="admin123", required=False)
     parser.add_argument('-t', '--type', required=False)
@@ -25,7 +26,8 @@ def app_init():
 
     args = vars(parser.parse_args())
     
-    nx_server = args["server"]
+    nx_source_server = args["sourceserver"]
+    nx_destination_server = args["destinationserver"]
     nx_user = args["user"]
     nx_pwd = args["passwd"]
     nx_type = args['type']
@@ -38,28 +40,31 @@ def app_init():
 
 
 def create_object(object_name, type_api, payload):
-    url = "{}/{}/{}" . format(nx_server, constants.base_url, type_api)
+    url = "{}/{}/{}" . format(nx_destination_server, constants.base_url, type_api)
     headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
-    print(payload)
+
+    json_obj_fmt = json.dumps(payload, indent=2)
+    print(json_obj_fmt)
 
     if nx_run:
         print("creating...")
         resp = requests.post(url, 
                             allow_redirects = False,
                             json=payload, 
-                            auth=requests.auth.HTTPBasicAuth(nx_user, nx_pwd), 
+                            auth=(nx_user, nx_pwd), 
                             verify=False)
 
         print(resp.status_code)
 
-        if resp.status_code == 200 or resp.status_code == 201:
+        if resp.status_code == 200 or resp.status_code == 201 or resp.status_code == 204:
             # res = resp.json()
             # print('success creating ' + nx_type + ': ' + object_name)
             print('success')
         else:
             # print('error creating ' + nx_type + ': ' + object_name)
             # print(payload)
-            print('error' )
+            # print('error' )
+            print(resp)
         
     return
 
@@ -86,8 +91,8 @@ def create_blobs():
 
             blob_payload = {}
             blob_payload['softQuota'] = {}
-            blob_payload['softQuota']['type'] = 'File'
-            blob_payload['softQuota']['limt'] = 0
+            # blob_payload['softQuota']['type'] = 'File'
+            # blob_payload['softQuota']['limt'] = 0
             blob_payload['path'] = blob_path
             blob_payload['name'] = name
 
@@ -99,8 +104,24 @@ def create_blobs():
     return
 
 
+def replace_server_path():
+    repo_src = constants.output_dir + '/repo.json'
+    repo_dest = constants.output_dir + '/repo_dest.json'
+
+    with open(repo_src, 'r') as fi:
+        data = fi.read()
+        data = data.replace(nx_source_server, nx_destination_server)
+
+    with open(repo_dest, 'w') as fo:
+        fo.write(data)
+        fo.close
+
+    return repo_dest
+
+    
 def create_repositories():
-    f = constants.output_dir + '/repo.json'
+
+    f = replace_server_path()
     data = read_json_file(f)
 
     hosted_repos = get_repos_by_type(data, 'hosted')
@@ -129,16 +150,17 @@ def _create_repositories(data):
     for repo in data:
         name = repo["name"]
         format = repo["format"]
-        url = repo["url"]
+        # url = repo["url"]
         type = repo["type"]
 
         if not name in constants.ootb_repositories:
             if format == "maven2":
                 format = format[:-1]
-                repo_api = "repositories/" + format + "/" + type
 
-                print ('got repository: ' + name + " " + format + " " + repo_api)
-                create_object(name, repo_api, repo)
+            repo_api = "repositories/" + format + "/" + type
+
+            print ('got repository: ' + name + " " + format + " " + repo_api)
+            create_object(name, repo_api, repo)
         else:
             print("default repo: " + name  + " [do not create]")
 
