@@ -12,7 +12,7 @@ import constants
 
 
 def app_init():
-    global nx_source_server, nx_destination_server, nx_user, nx_pwd, nx_type, nx_run, nx_create_blobs, datafile
+    global nx_source_server, nx_destination_server, nx_user, nx_pwd, nx_type, nx_run
 
     parser = argparse.ArgumentParser()
 
@@ -20,10 +20,8 @@ def app_init():
     parser.add_argument('-d', '--destinationserver', help='', required=True)
     parser.add_argument('-a', '--user', help='', default="admin", required=False)
     parser.add_argument('-p', '--passwd', default="admin123", required=False)
-    parser.add_argument('-t', '--type', required=False)
-    parser.add_argument('-f', '--datafile', required=False)
+    parser.add_argument('-t', '--type', required=True)
     parser.add_argument('-r', '--run', action='store_true')
-    parser.add_argument('-b', '--createblobs', action='store_true')
 
     args = vars(parser.parse_args())
     
@@ -31,11 +29,8 @@ def app_init():
     nx_destination_server = args["destinationserver"]
     nx_user = args["user"]
     nx_pwd = args["passwd"]
-    nx_type = args['type']
     nx_run = args['run']
-    nx_create_blobs = args['createblobs'] 
-
-    datafile = args['datafile']
+    nx_type = args['type'] 
 
     return
 
@@ -184,6 +179,15 @@ def create_content_selectors():
 
 
 def create_privileges():
+# Manual intervention may be required
+# The READ does not return the format, but it is needed for the creation e.g. for maven, format needs to 'maven2'
+# Also the READ returns as below for the ALL repository setting, but create does not like it - needs to be full repo name
+# "format": null,
+# "repository": "*-maven2",
+# correction:
+#  "format": "maven2",
+#  "repository": "maven-releases",
+
     f = constants.output_dir + '/priv.json'
     data = read_json_file(f)
 
@@ -195,8 +199,8 @@ def create_privileges():
             type_api = constants.privilege_endpoints[priv_type]
             print('got privilege: ' + priv_name + " " + priv_type + " " + type_api)
             create_object(priv_name, type_api, priv)
-        else:
-            print("default privilege: " + priv_name + " [do not create]")
+        # else:
+            # print("default privilege: " + priv_name + " [do not create]")
 
     return
 
@@ -232,6 +236,8 @@ def create_users():
         user_name = user["userId"]
 
         if not user_name in constants.ootb_users:
+            # need to add the password property. set it to the username
+            user['password'] = user_name
             print('got user: ' + user_name + " " + type_api)
             create_object(user_name, type_api, user)
         else:
@@ -243,14 +249,29 @@ def create_users():
 def main():
     app_init()
 
-    if nx_create_blobs:
-        create_blobs()
+    # execute one at a time in this order
 
-    create_repositories()
-    create_content_selectors()
-    create_privileges()
-    create_roles()
-    create_users()
+    match nx_type:
+        case 'blobs':
+            create_blobs()
+
+        case 'repos':
+            create_repositories()
+
+        case 'cs':
+            create_content_selectors()
+    
+        case 'privs':
+            create_privileges()
+    
+        case 'roles':
+            create_roles()
+    
+        case 'users':
+            create_users()
+
+        case _:
+            print("Error: invalid type (-t)")
 
 
                 
